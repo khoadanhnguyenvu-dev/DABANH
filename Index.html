@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quản lý đá banh – Astrocat Creative</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --green: #16a34a;
+    --green-light: #dcfce7;
+    --green-mid: #86efac;
+    --green-dark: #14532d;
+    --blue-light: #dbeafe;
+    --blue-text: #1d4ed8;
+    --amber-light: #fef3c7;
+    --amber-text: #92400e;
+    --red-light: #fee2e2;
+    --red-text: #991b1b;
+    --bg: #f8fafc;
+    --surface: #ffffff;
+    --border: #e2e8f0;
+    --border-strong: #cbd5e1;
+    --text: #0f172a;
+    --text-2: #475569;
+    --text-3: #94a3b8;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 3rem;
+  }
+
+  /* HEADER */
+  .top-bar {
+    background: var(--green);
+    padding: 1rem 1.25rem 1.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .top-bar::before {
+    content: '⚽';
+    position: absolute;
+    right: -10px;
+    top: -14px;
+    font-size: 80px;
+    opacity: .1;
+    transform: rotate(-15deg);
+  }
+  .top-bar-inner { display: flex; align-items: flex-start; justify-content: space-between; }
+  .top-bar h1 { font-size: 20px; font-weight: 600; color: #fff; }
+  .top-bar p { font-size: 12px; color: var(--green-mid); margin-top: 2px; }
+  .brand-tag {
+    font-size: 10px;
+    color: var(--green-mid);
+    text-align: right;
+    line-height: 1.6;
+  }
+  .brand-tag strong { display: block; color: #fff; font-size: 11px; font-weight: 600; }
+
+  /* SUMMARY STRIP */
+  .summary-strip {
+    background: var(--green-dark);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    text-align: center;
+    padding: .625rem 0;
+  }
+  .strip-item { border-right: 1px solid rgba(255,255,255,.1); }
+  .strip-item:last-child { border-right: none; }
+  .strip-label { font-size: 10px; color: var(--green-mid); margin-bottom: 1px; }
+  .strip-value { font-size: 15px; font-weight: 600; color: #fff; }
+
+  /* CONTENT */
+  .content { padding: 1rem 1rem 0; max-width: 520px; margin: 0 auto; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: .875rem 1rem;
+    margin-bottom: .875rem;
+  }
+  .card-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    margin-bottom: .625rem;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  input[type="date"],
+  input[type="text"],
+  input[type="number"] {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-sm);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    outline: none;
+    transition: border-color .15s;
+  }
+  input:focus { border-color: var(--green); box-shadow: 0 0 0 3px rgba(22,163,74,.12); }
+
+  .row { display: flex; gap: 8px; }
+  .row input { flex: 1; }
+
+  button {
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    transition: opacity .15s, transform .1s;
+  }
+  button:active { transform: scale(.97); }
+
+  .btn-add {
+    background: var(--green);
+    color: #fff;
+    padding: 9px 14px;
+    white-space: nowrap;
+  }
+  .btn-add:hover { opacity: .88; }
+
+  .btn-save {
+    width: 100%;
+    background: var(--green);
+    color: #fff;
+    padding: 11px;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    margin-top: .75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .btn-save:hover { opacity: .88; }
+
+  .members-list { margin-top: .625rem; display: flex; flex-direction: column; gap: 5px; }
+  .member-row {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 7px 10px;
+  }
+  .avatar {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--blue-light);
+    color: var(--blue-text);
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .mname { flex: 1; font-size: 14px; }
+  .mshare { font-size: 12px; font-weight: 600; color: var(--green); white-space: nowrap; }
+  .btn-remove {
+    background: none;
+    color: var(--text-3);
+    padding: 2px 5px;
+    font-size: 16px;
+    line-height: 1;
+  }
+  .btn-remove:hover { color: var(--red-text); background: var(--red-light); }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
+    margin-top: .625rem;
+  }
+  .stat-box {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: .5rem .75rem;
+  }
+  .stat-box .lbl { font-size: 10px; color: var(--text-3); margin-bottom: 2px; }
+  .stat-box .val { font-size: 14px; font-weight: 600; color: var(--text); }
+  .stat-box .val.green { color: var(--green); }
+
+  .empty { text-align: center; padding: .875rem 0 .25rem; color: var(--text-3); font-size: 12px; }
+
+  /* HISTORY */
+  .hist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: .5rem;
+  }
+  .hist-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-3);
+    text-transform: uppercase;
+    letter-spacing: .06em;
+  }
+  .sess-badge {
+    font-size: 10px;
+    background: var(--green-light);
+    color: var(--green-dark);
+    padding: 2px 8px;
+    border-radius: 99px;
+    font-weight: 600;
+  }
+
+  .sess-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: .75rem 1rem;
+    margin-bottom: .625rem;
+  }
+  .sess-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: .5rem; }
+  .sess-date { font-size: 14px; font-weight: 600; color: var(--text); }
+  .sess-fee { font-size: 12px; color: var(--text-2); margin-top: 1px; }
+  .btn-del {
+    background: none;
+    color: var(--text-3);
+    padding: 3px 6px;
+    font-size: 15px;
+    line-height: 1;
+  }
+  .btn-del:hover { color: var(--red-text); background: var(--red-light); }
+
+  .pills { display: flex; flex-wrap: wrap; gap: 5px; }
+  .pill {
+    font-size: 11px;
+    padding: 2px 9px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    background: var(--bg);
+  }
+  .pill-green { font-size: 11px; padding: 2px 9px; border-radius: 99px; background: var(--green-light); color: var(--green-dark); font-weight: 600; }
+  .pill-blue { font-size: 11px; padding: 2px 9px; border-radius: 99px; background: var(--blue-light); color: var(--blue-text); font-weight: 600; }
+
+  .no-sess { text-align: center; color: var(--text-3); font-size: 12px; padding: 1.5rem; }
+
+  footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 11px;
+    color: var(--text-3);
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  footer strong { color: var(--text-2); }
+
+  @media (max-width: 400px) {
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .stat-box:last-child { grid-column: span 2; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-bar-inner">
+    <div>
+      <h1>⚽ Quản lý đá banh</h1>
+      <p>Ghi nhớ thành viên &amp; chia tiền sân</p>
+    </div>
+    <div class="brand-tag">Sản phẩm bởi<strong>Astrocat Creative</strong></div>
+  </div>
+</div>
+
+<div class="summary-strip" id="global-strip">
+  <div class="strip-item"><div class="strip-label">Tổng buổi</div><div class="strip-value" id="g-sessions">0</div></div>
+  <div class="strip-item"><div class="strip-label">Tổng thành viên</div><div class="strip-value" id="g-members">0</div></div>
+  <div class="strip-item"><div class="strip-label">Tổng chi phí</div><div class="strip-value" id="g-cost">0đ</div></div>
+</div>
+
+<div class="content">
+
+  <!-- Ngày -->
+  <div class="card">
+    <div class="card-label">📅 Ngày đá banh</div>
+    <input type="date" id="match-date" />
+  </div>
+
+  <!-- Thành viên -->
+  <div class="card">
+    <div class="card-label">👥 Thành viên tham gia</div>
+    <div class="row">
+      <input type="text" id="member-input" placeholder="Nhập tên thành viên..." maxlength="30" />
+      <button class="btn-add" onclick="addMember()">+ Thêm</button>
+    </div>
+    <div class="members-list" id="members-list">
+      <div class="empty">Chưa có thành viên nào</div>
+    </div>
+  </div>
+
+  <!-- Tiền sân -->
+  <div class="card">
+    <div class="card-label">💰 Tiền sân</div>
+    <div class="row">
+      <input type="number" id="fee-input" placeholder="Nhập tổng tiền sân..." min="0" step="10000" oninput="updateAll()" />
+      <span style="align-self:center;font-size:13px;color:var(--text-3);white-space:nowrap">VNĐ</span>
+    </div>
+    <div class="stats-grid" id="stats-grid" style="display:none">
+      <div class="stat-box"><div class="lbl">Số người đá</div><div class="val" id="st-count">—</div></div>
+      <div class="stat-box"><div class="lbl">Tổng tiền sân</div><div class="val" id="st-total">—</div></div>
+      <div class="stat-box"><div class="lbl">Mỗi người đóng</div><div class="val green" id="st-share">—</div></div>
+    </div>
+    <button class="btn-save" onclick="saveSession()">💾 Lưu buổi đá banh</button>
+  </div>
+
+  <!-- Lịch sử -->
+  <div class="hist-header">
+    <div class="hist-title">📋 Lịch sử buổi đá</div>
+    <span class="sess-badge" id="sess-count">0 buổi</span>
+  </div>
+  <div id="sessions-list">
+    <div class="no-sess">⚽ Chưa có buổi đá nào được lưu</div>
+  </div>
+
+  <footer>Sản phẩm bởi <strong>Astrocat Creative</strong> &nbsp;·&nbsp; Dữ liệu lưu trên thiết bị của bạn</footer>
+</div>
+
+<script>
+let members = [];
+let sessions = JSON.parse(localStorage.getItem('astrocat-football') || '[]');
+
+function init() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('match-date').value = today;
+  renderSessions();
+  updateGlobalStrip();
+}
+
+function fmtVND(n) { return n.toLocaleString('vi-VN') + 'đ'; }
+function initials(name) { return name.trim().split(' ').map(w => w[0]).join('').slice(0,2).toUpperCase(); }
+function fmtDate(d) { const [y,m,day] = d.split('-'); return `${day}/${m}/${y}`; }
+
+function calcShare() {
+  const fee = parseFloat(document.getElementById('fee-input').value) || 0;
+  return members.length > 0 ? Math.round(fee / members.length) : 0;
+}
+
+function addMember() {
+  const inp = document.getElementById('member-input');
+  const name = inp.value.trim();
+  if (!name || members.includes(name)) { inp.value = ''; return; }
+  members.push(name);
+  inp.value = '';
+  updateAll();
+  inp.focus();
+}
+
+document.getElementById('member-input').addEventListener('keydown', e => { if (e.key === 'Enter') addMember(); });
+
+function removeMember(i) { members.splice(i, 1); updateAll(); }
+
+function updateAll() {
+  const fee = parseFloat(document.getElementById('fee-input').value) || 0;
+  const share = calcShare();
+  const list = document.getElementById('members-list');
+
+  if (members.length === 0) {
+    list.innerHTML = '<div class="empty">Chưa có thành viên nào</div>';
+  } else {
+    list.innerHTML = members.map((m, i) => `
+      <div class="member-row">
+        <div class="avatar">${initials(m)}</div>
+        <span class="mname">${m}</span>
+        ${fee > 0 ? `<span class="mshare">${fmtVND(share)}</span>` : ''}
+        <button class="btn-remove" onclick="removeMember(${i})" title="Xóa">✕</button>
+      </div>`).join('');
+  }
+
+  const grid = document.getElementById('stats-grid');
+  if (members.length > 0) {
+    document.getElementById('st-count').textContent = members.length + ' người';
+    document.getElementById('st-total').textContent = fee > 0 ? fmtVND(fee) : '—';
+    document.getElementById('st-share').textContent = fee > 0 ? fmtVND(share) : '—';
+    grid.style.display = 'grid';
+  } else {
+    grid.style.display = 'none';
+  }
+}
+
+function saveSession() {
+  const date = document.getElementById('match-date').value;
+  const fee = parseFloat(document.getElementById('fee-input').value) || 0;
+  if (!date) { alert('Vui lòng chọn ngày đá banh!'); return; }
+  if (members.length === 0) { alert('Vui lòng thêm ít nhất 1 thành viên!'); return; }
+  sessions.unshift({
+    id: Date.now(), date,
+    members: [...members], fee,
+    share: fee > 0 ? Math.round(fee / members.length) : 0
+  });
+  localStorage.setItem('astrocat-football', JSON.stringify(sessions));
+  renderSessions();
+  updateGlobalStrip();
+  members = [];
+  document.getElementById('fee-input').value = '';
+  document.getElementById('match-date').value = new Date().toISOString().split('T')[0];
+  updateAll();
+}
+
+function deleteSession(id) {
+  if (!confirm('Xóa buổi đá này?')) return;
+  sessions = sessions.filter(s => s.id !== id);
+  localStorage.setItem('astrocat-football', JSON.stringify(sessions));
+  renderSessions();
+  updateGlobalStrip();
+}
+
+function renderSessions() {
+  const list = document.getElementById('sessions-list');
+  const count = sessions.length;
+  document.getElementById('sess-count').textContent = count + ' buổi';
+  if (count === 0) {
+    list.innerHTML = '<div class="no-sess">⚽ Chưa có buổi đá nào được lưu</div>';
+    return;
+  }
+  list.innerHTML = sessions.map(s => `
+    <div class="sess-card">
+      <div class="sess-top">
+        <div>
+          <div class="sess-date">📅 ${fmtDate(s.date)}</div>
+          ${s.fee > 0 ? `<div class="sess-fee">Tổng: ${fmtVND(s.fee)}</div>` : ''}
+        </div>
+        <button class="btn-del" onclick="deleteSession(${s.id})" title="Xóa buổi này">🗑</button>
+      </div>
+      <div class="pills">
+        <span class="pill-blue">👥 ${s.members.length} người</span>
+        ${s.members.map(m => `<span class="pill">${m}</span>`).join('')}
+        ${s.share > 0 ? `<span class="pill-green">💸 ${fmtVND(s.share)}/người</span>` : ''}
+      </div>
+    </div>`).join('');
+}
+
+function updateGlobalStrip() {
+  const totalSess = sessions.length;
+  const uniqueMembers = new Set(sessions.flatMap(s => s.members)).size;
+  const totalCost = sessions.reduce((a, s) => a + (s.fee || 0), 0);
+  document.getElementById('g-sessions').textContent = totalSess;
+  document.getElementById('g-members').textContent = uniqueMembers;
+  document.getElementById('g-cost').textContent = totalCost > 0 ? fmtVND(totalCost) : '0đ';
+}
+
+init();
+</script>
+</body>
+</html>
